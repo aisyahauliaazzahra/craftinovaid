@@ -57,10 +57,10 @@ const AboutPage = ({ setCurrentView, setShowPasswordModal, companyInfo }) => {
           <h3 className="text-2xl font-bold text-gray-800 mb-4">Ingin Mencoba Kit Craftinova?</h3>
           <p className="text-gray-600 mb-6">Dapatkan kit DIY art therapy dan rasakan manfaatnya langsung</p>
           <button
-            onClick={() => window.open('https://wa.me/6281234567890?text=Saya%20ingin%20informasi%20tentang%20kit%20Craftinova', '_blank')}
+            onClick={() => window.open('https://id.shp.ee/VYS4ps1', '_blank')}
             className="bg-green-500 text-white py-3 px-6 rounded-xl font-semibold hover:bg-green-600 transition-all"
           >
-            Chat via WhatsApp
+            Kunjungi Toko Kami
           </button>
         </div>
           </div>

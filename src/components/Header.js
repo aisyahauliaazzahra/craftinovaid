@@ -1,32 +1,48 @@
-import React from 'react';
-import { BarChart3 } from 'lucide-react';
+import React, { useState } from 'react';
+import { BarChart3, Menu, X } from 'lucide-react';
 
-const Header = ({ companyInfo, setCurrentView, setShowPasswordModal, activeView }) => {
+const Header = ({ 
+  companyInfo = { name: 'Company Name', tagline: 'Your Tagline' }, 
+  setCurrentView = () => {}, 
+  setShowPasswordModal = () => {}, 
+  activeView = 'home' 
+}) => {
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+
   const navItems = [
     { key: 'home', label: 'Home' },
     { key: 'about', label: 'Tentang Kami' },
     { key: 'articles', label: 'Artikel' },
+    { key: 'admin', label: 'Admin' },
   ];
+
+  const handleNavClick = (key) => {
+    setCurrentView(key);
+    setIsMobileMenuOpen(false); // Tutup menu mobile setelah item dipilih
+  };
 
   return (
     <header className="bg-white shadow-sm sticky top-0 z-40">
-      <div className="max-w-7xl mx-auto px-6 py-4">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 py-4">
         <div className="flex justify-between items-center">
+          {/* Logo dan Company Info */}
           <div className="flex items-center space-x-3">
-            <div className="w-10 h-10 bg-gradient-to-r from-blue-500 to-indigo-600 rounded-lg flex items-center justify-center">
-              <BarChart3 className="w-6 h-6 text-white" />
+            <div className="w-8 h-8 sm:w-10 sm:h-10 bg-gradient-to-r from-blue-500 to-indigo-600 rounded-lg flex items-center justify-center">
+              <BarChart3 className="w-4 h-4 sm:w-6 sm:h-6 text-white" />
             </div>
             <div>
-              <h1 className="text-xl font-bold text-gray-800">{companyInfo.name}</h1>
-              <p className="text-xs text-gray-600">{companyInfo.tagline}</p>
+              <h1 className="text-lg sm:text-xl font-bold text-gray-800">{companyInfo.name}</h1>
+              <p className="text-xs text-gray-600 hidden sm:block">{companyInfo.tagline}</p>
             </div>
           </div>
+
+          {/* Desktop Navigation */}
           <nav className="hidden md:flex items-center space-x-8">
             {navItems.map((item) => (
               <button
                 key={item.key}
-                onClick={() => setCurrentView(item.key)}
-                className={`${
+                onClick={() => handleNavClick(item.key)}
+                className={`transition-colors duration-200 ${
                   activeView === item.key
                     ? 'text-blue-600 font-semibold'
                     : 'text-gray-600 hover:text-blue-600'
@@ -36,7 +52,41 @@ const Header = ({ companyInfo, setCurrentView, setShowPasswordModal, activeView 
               </button>
             ))}
           </nav>
+
+          {/* Mobile Menu Button */}
+          <button
+            className="md:hidden p-2 rounded-lg hover:bg-gray-100 transition-colors duration-200"
+            onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
+            aria-label="Toggle mobile menu"
+          >
+            {isMobileMenuOpen ? (
+              <X className="w-6 h-6 text-gray-600" />
+            ) : (
+              <Menu className="w-6 h-6 text-gray-600" />
+            )}
+          </button>
         </div>
+
+        {/* Mobile Navigation Menu */}
+        {isMobileMenuOpen && (
+          <div className="md:hidden mt-4 pb-4 border-t border-gray-200">
+            <nav className="flex flex-col space-y-3 pt-4">
+              {navItems.map((item) => (
+                <button
+                  key={item.key}
+                  onClick={() => handleNavClick(item.key)}
+                  className={`text-left px-2 py-2 rounded-lg transition-colors duration-200 ${
+                    activeView === item.key
+                      ? 'text-blue-600 font-semibold bg-blue-50'
+                      : 'text-gray-600 hover:text-blue-600 hover:bg-gray-50'
+                  }`}
+                >
+                  {item.label}
+                </button>
+              ))}
+            </nav>
+          </div>
+        )}
       </div>
     </header>
   );
