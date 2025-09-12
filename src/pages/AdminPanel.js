@@ -8,16 +8,21 @@ const AdminPanel = ({ questions, setQuestions, setIsAdmin, setCurrentView }) => 
   const [editingQuestion, setEditingQuestion] = useState(null);
   const [userAnswers, setUserAnswers] = useState([]);
   const [selectedUser, setSelectedUser] = useState(null);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     const fetchUserAnswers = async () => {
+      setLoading(true);
       try {
         const data = await supabaseService.getAllUserAnswers();
+        console.log('Fetched user answers:', data); // Debug log
         setUserAnswers(data);
       } catch (error) {
         console.error('Failed to fetch user answers from Supabase:', error);
         const localData = JSON.parse(localStorage.getItem('userAnswers') || '[]');
         setUserAnswers(localData);
+      } finally {
+        setLoading(false);
       }
     };
     fetchUserAnswers();
@@ -106,7 +111,10 @@ const AdminPanel = ({ questions, setQuestions, setIsAdmin, setCurrentView }) => 
             <Users className="w-5 h-5 text-teal-600" />
             <span>Jawaban User</span>
           </h2>
-          {userAnswers.length === 0 ? (
+          
+          {loading ? (
+            <p className="text-teal-500">Loading user answers...</p>
+          ) : userAnswers.length === 0 ? (
             <p className="text-teal-500">Belum ada jawaban user.</p>
           ) : (
             <div className="overflow-x-auto">
@@ -124,25 +132,25 @@ const AdminPanel = ({ questions, setQuestions, setIsAdmin, setCurrentView }) => 
                 </thead>
                 <tbody>
                   {userAnswers.map((user, index) => (
-                    <tr key={index} className="hover:bg-teal-50">
+                    <tr key={user.id || index} className="hover:bg-teal-50">
                       <td className="border border-teal-200 px-4 py-2 text-sm text-teal-600">
-                        {new Date(user.timestamp).toLocaleString()}
+                        {new Date(user.timestamp || user.created_at).toLocaleString()}
                       </td>
                       <td className="border border-teal-200 px-4 py-2 text-sm text-teal-600">
-                        {user.userInfo?.nama || '-'}
+                        {user.user_info?.nama || '-'}
                       </td>
                       <td className="border border-teal-200 px-4 py-2 text-sm text-teal-600">
-                        {user.userInfo?.usia || '-'}
+                        {user.user_info?.usia || '-'}
                       </td>
                       <td className="border border-teal-200 px-4 py-2 text-sm text-teal-600">
-                        {user.userInfo?.pekerjaan || '-'}
+                        {user.user_info?.pekerjaan || '-'}
                       </td>
                       <td className="border border-teal-200 px-4 py-2 text-sm text-teal-600">
-                        {user.userInfo?.asal || '-'}
+                        {user.user_info?.asal || '-'}
                       </td>
                       <td className="border border-teal-200 px-4 py-2 text-sm">
-                        <span className={`font-medium ${user.stressLevel.color}`}>
-                          {user.stressLevel.level}
+                        <span className={`font-medium ${user.stress_level?.color || 'text-gray-500'}`}>
+                          {user.stress_level?.level || 'N/A'}
                         </span>
                       </td>
                       <td className="border border-teal-200 px-4 py-2 text-center">
@@ -179,12 +187,12 @@ const AdminPanel = ({ questions, setQuestions, setIsAdmin, setCurrentView }) => 
                 <div>
                   <h4 className="font-semibold text-teal-700 mb-2">Informasi User</h4>
                   <div className="space-y-2 text-sm">
-                    <p><span className="font-medium">Nama:</span> {selectedUser.userInfo?.nama || '-'}</p>
-                    <p><span className="font-medium">Usia:</span> {selectedUser.userInfo?.usia || '-'} tahun</p>
-                    <p><span className="font-medium">Pekerjaan:</span> {selectedUser.userInfo?.pekerjaan || '-'}</p>
-                    <p><span className="font-medium">Asal:</span> {selectedUser.userInfo?.asal || '-'}</p>
-                    <p><span className="font-medium">Timestamp:</span> {new Date(selectedUser.timestamp).toLocaleString()}</p>
-                    <p><span className="font-medium">Tingkat Stress:</span> <span className={`font-medium ${selectedUser.stressLevel.color}`}>{selectedUser.stressLevel.level}</span></p>
+                    <p><span className="font-medium">Nama:</span> {selectedUser.user_info?.nama || '-'}</p>
+                    <p><span className="font-medium">Usia:</span> {selectedUser.user_info?.usia || '-'} tahun</p>
+                    <p><span className="font-medium">Pekerjaan:</span> {selectedUser.user_info?.pekerjaan || '-'}</p>
+                    <p><span className="font-medium">Asal:</span> {selectedUser.user_info?.asal || '-'}</p>
+                    <p><span className="font-medium">Timestamp:</span> {new Date(selectedUser.timestamp || selectedUser.created_at).toLocaleString()}</p>
+                    <p><span className="font-medium">Tingkat Stress:</span> <span className={`font-medium ${selectedUser.stress_level?.color || 'text-gray-500'}`}>{selectedUser.stress_level?.level || 'N/A'}</span></p>
                   </div>
                 </div>
               </div>
@@ -193,7 +201,7 @@ const AdminPanel = ({ questions, setQuestions, setIsAdmin, setCurrentView }) => 
                 <div>
                   <h4 className="font-semibold text-teal-700 mb-3">Pre-Test Answers</h4>
                   <div className="space-y-2">
-                    {selectedUser.preTestAnswers.map((answer, i) => {
+                    {(selectedUser.pre_test_answers || []).map((answer, i) => {
                       const question = initialQuestions[i];
                       const optionText = question && question.options[answer - 1];
                       return (
@@ -209,7 +217,7 @@ const AdminPanel = ({ questions, setQuestions, setIsAdmin, setCurrentView }) => 
                 <div>
                   <h4 className="font-semibold text-teal-700 mb-3">Post-Test Answers</h4>
                   <div className="space-y-2">
-                    {selectedUser.postTestAnswers.map((answer, i) => {
+                    {(selectedUser.post_test_answers || []).map((answer, i) => {
                       const question = postTestQuestions[i];
                       const optionText = question && question.options[answer - 1];
                       return (

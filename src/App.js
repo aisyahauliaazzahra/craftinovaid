@@ -44,15 +44,35 @@ const StressLevelWebsite = () => {
   const [questions, setQuestions] = useState(initialQuestions);
   const [selectedArticle, setSelectedArticle] = useState(null);
 
-  // Calculate stress level
+  // Calculate stress level - FIXED LOGIC
   const calculateStressLevel = (answers) => {
     const total = answers.reduce((sum, answer) => sum + answer, 0);
     const maxScore = postTestQuestions.length * 4;
     const percentage = (total / maxScore) * 100;
     
-    if (percentage <= 75) return { level: "Tidak Membantu", color: "text-green-600", description: "Craftinova tidak membantu mengurangi stress." };
-    if (percentage <= 50) return { level: "Cukup Membantu", color: "text-yellow-600", description: "Craftinova cukup membantu mengurangi stress." };
-return { level: "Sangat Membantu", color: "text-orange-600", description: "Tingkat stress Anda tinggi. Disarankan u." };
+    // Fixed the logic - higher scores mean MORE helpful, not less
+    if (percentage >= 75) {
+      return { 
+        level: "Sangat Membantu", 
+        color: "text-green-600", 
+        description: "Craftinova sangat membantu mengurangi stress Anda.",
+        result: "Sangat Membantu"
+      };
+    } else if (percentage >= 50) {
+      return { 
+        level: "Cukup Membantu", 
+        color: "text-yellow-600", 
+        description: "Craftinova cukup membantu mengurangi stress Anda.",
+        result: "Cukup Membantu"
+      };
+    } else {
+      return { 
+        level: "Kurang Membantu", 
+        color: "text-red-600", 
+        description: "Craftinova kurang membantu mengurangi stress. Mungkin Anda perlu mencoba pendekatan lain.",
+        result: "Kurang Membantu"
+      };
+    }
   };
 
   // Admin login
@@ -109,22 +129,52 @@ return { level: "Sangat Membantu", color: "text-orange-600", description: "Tingk
       setStressLevel(result);
       setCurrentView('result');
 
-      // Save user answers to Supabase
+      // FIXED: Save user answers to Supabase with correct data structure
       const userData = {
-        userInfo: userInfo,
-        preTestAnswers: answers,
-        postTestAnswers: newAnswers,
-        stressLevel: result,
+        user_info: userInfo, // Changed from userInfo to user_info to match schema
+        pre_test_answers: answers, // Changed from preTestAnswers to pre_test_answers
+        post_test_answers: newAnswers, // Changed from postTestAnswers to post_test_answers
+        stress_level: result, // Changed from stressLevel to stress_level
         timestamp: new Date().toISOString()
       };
 
       try {
-        await supabaseService.saveUserAnswers(userData);
+        console.log('Saving user data:', userData); // Debug log
+        
+        // Test connection first
+        const connectionTest = await supabaseService.testConnection();
+        console.log('Connection test result:', connectionTest);
+        
+        if (!connectionTest) {
+          throw new Error('Cannot connect to Supabase');
+        }
+        
+        const savedData = await supabaseService.saveUserAnswers(userData);
+        console.log('Data saved successfully to Supabase:', savedData);
+        
+        // Show success message
+        console.log('✅ Data berhasil disimpan ke server!');
+        
       } catch (error) {
-        alert('Gagal menyimpan jawaban ke server. Jawaban akan disimpan secara lokal.');
-        const existingData = JSON.parse(localStorage.getItem('userAnswers') || '[]');
-        existingData.push(userData);
-        localStorage.setItem('userAnswers', JSON.stringify(existingData));
+        console.error('Failed to save to Supabase:', error);
+        console.error('Error details:', {
+          name: error.name,
+          message: error.message,
+          code: error.code,
+          details: error.details
+        });
+        
+        alert(`Gagal menyimpan jawaban ke server. Error: ${error.message}. Jawaban akan disimpan secara lokal.`);
+        
+        // Fallback to localStorage
+        try {
+          const existingData = JSON.parse(localStorage.getItem('userAnswers') || '[]');
+          existingData.push(userData);
+          localStorage.setItem('userAnswers', JSON.stringify(existingData));
+          console.log('Data saved to localStorage as fallback');
+        } catch (localError) {
+          console.error('Even localStorage failed:', localError);
+        }
       }
     }
   };
@@ -137,6 +187,7 @@ return { level: "Sangat Membantu", color: "text-orange-600", description: "Tingk
     setPostTestAnswers([]);
     setStressLevel(null);
     setCurrentPostTestIndex(0);
+    setUserInfo(null);
   };
 
   // Props object for easier passing

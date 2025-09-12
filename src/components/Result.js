@@ -13,7 +13,7 @@ const Result = ({ stressLevel, resetCustomerJourney }) => {
           
           {/* Hasil kit membantu */}
           <div className={`text-3xl font-bold mb-4 ${stressLevel.color}`}>
-            {stressLevel.result} 
+            {stressLevel.result || stressLevel.level} 
           </div>
 
           {/* Penjelasan tambahan */}
