@@ -6,16 +6,16 @@ const PostTest = ({ postTestQuestions, currentPostTestIndex, handlePostTestAnswe
   if (!currentQuestion) return null;
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-green-50 to-emerald-100 flex items-center justify-center p-6">
+    <div className="min-h-screen bg-gradient-to-br from-teal-50 to-cyan-100 flex items-center justify-center p-6">
       <div className="max-w-lg w-full bg-white rounded-2xl shadow-xl p-8">
         <div className="mb-6">
           <div className="flex justify-between items-center mb-4">
-            <span className="text-sm font-semibold text-emerald-600">
+            <span className="text-sm font-semibold text-teal-600">
               Post-Test {currentPostTestIndex + 1} dari {postTestQuestions.length}
             </span>
             <div className="w-24 bg-gray-200 rounded-full h-2">
-              <div 
-                className="bg-emerald-600 h-2 rounded-full transition-all"
+              <div
+                className="bg-teal-600 h-2 rounded-full transition-all"
                 style={{ width: `${((currentPostTestIndex + 1) / postTestQuestions.length) * 100}%` }}
               ></div>
             </div>

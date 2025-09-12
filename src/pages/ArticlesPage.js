@@ -19,9 +19,9 @@ const ArticlesPage = ({ setCurrentView, setShowPasswordModal, companyInfo, artic
 
         <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
           {articles.map((article) => (
-            <div 
-              key={article.id} 
-              className="bg-white rounded-xl shadow-sm border hover:shadow-md transition-all cursor-pointer"
+            <div
+              key={article.id}
+              className="bg-gradient-to-br from-teal-50 to-cyan-100 rounded-xl shadow-sm border hover:shadow-md transition-all cursor-pointer"
               onClick={() => setSelectedArticle(article)}
             >
               <div className="p-6">

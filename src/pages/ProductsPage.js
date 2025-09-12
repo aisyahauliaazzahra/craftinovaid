@@ -3,7 +3,7 @@ import { ShoppingBag, CheckCircle, Package, Star } from "lucide-react";
 
 const ProductsPage = ({ companyInfo, product, setCurrentView, setShowPasswordModal }) => {
   return (
-    <div className="min-h-screen bg-gradient-to-br from-purple-50 to-pink-100 p-6">
+    <div className="min-h-screen bg-gradient-to-br from-teal-50 to-cyan-100 p-6">
       <div className="max-w-4xl mx-auto bg-white rounded-2xl shadow-xl p-8">
         {/* Header */}
         <div className="flex items-center gap-4 mb-8">
@@ -17,7 +17,7 @@ const ProductsPage = ({ companyInfo, product, setCurrentView, setShowPasswordMod
         {/* Product Info */}
         <div className="flex flex-col md:flex-row gap-8">
           {/* Image / Icon */}
-          <div className="flex-1 flex justify-center items-center bg-purple-50 rounded-xl p-6">
+          <div className="flex-1 flex justify-center items-center bg-teal-50 rounded-xl p-6">
             <span className="text-8xl">{product.image}</span>
           </div>
 
@@ -28,7 +28,7 @@ const ProductsPage = ({ companyInfo, product, setCurrentView, setShowPasswordMod
 
             {/* Price */}
             <div className="flex items-center gap-3 mb-6">
-              <span className="text-3xl font-bold text-pink-600">{product.price}</span>
+              <span className="text-3xl font-bold text-teal-600">{product.price}</span>
               <span className="text-gray-400 line-through">{product.originalPrice}</span>
             </div>
 
@@ -37,7 +37,7 @@ const ProductsPage = ({ companyInfo, product, setCurrentView, setShowPasswordMod
               href={product.shopeeLink}
               target="_blank"
               rel="noopener noreferrer"
-              className="w-full md:w-auto inline-flex items-center justify-center gap-2 bg-gradient-to-r from-purple-500 to-pink-600 text-white py-3 px-6 rounded-xl font-semibold hover:from-purple-600 hover:to-pink-700 transition-all"
+              className="w-full md:w-auto inline-flex items-center justify-center gap-2 bg-gradient-to-r from-teal-500 to-cyan-600 text-white py-3 px-6 rounded-xl font-semibold hover:from-teal-600 hover:to-cyan-700 transition-all"
             >
               <ShoppingBag className="w-5 h-5" />
               Beli di Shopee

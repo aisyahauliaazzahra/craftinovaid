@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { BarChart3 } from 'lucide-react';
+import { supabaseService } from './services/supabaseService';
 
 // Import all pages
 import HomePage from './pages/HomePage';
@@ -17,6 +18,7 @@ import Result from './components/Result';
 // Import modals
 import PasswordModal from './components/PasswordModal';
 import ArticleDetailModal from './components/ArticleDetailModal';
+import UserInfoModal from './components/UserInfoModal';
 
 // Import data
 import { companyInfo, articles, products, initialQuestions, postTestQuestions } from './data/appData';
@@ -27,6 +29,8 @@ const StressLevelWebsite = () => {
   const [isAdmin, setIsAdmin] = useState(false);
   const [adminPassword, setAdminPassword] = useState('');
   const [showPasswordModal, setShowPasswordModal] = useState(false);
+  const [showUserInfoModal, setShowUserInfoModal] = useState(false);
+  const [userInfo, setUserInfo] = useState(null);
   
   // Quiz and assessment states
   const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
@@ -65,6 +69,12 @@ return { level: "Sangat Membantu", color: "text-orange-600", description: "Tingk
 
   // Customer journey functions
   const handleScan = () => {
+    setShowUserInfoModal(true);
+  };
+
+  const handleUserInfoSubmit = (info) => {
+    setUserInfo(info);
+    setShowUserInfoModal(false);
     setCurrentView('quiz');
     setCurrentQuestionIndex(0);
     setAnswers([]);
@@ -88,16 +98,34 @@ return { level: "Sangat Membantu", color: "text-orange-600", description: "Tingk
     setPostTestAnswers([]);
   };
 
-  const handlePostTestAnswer = (answerIndex) => {
+  const handlePostTestAnswer = async (answerIndex) => {
     const newAnswers = [...postTestAnswers, answerIndex + 1];
     setPostTestAnswers(newAnswers);
-    
+
     if (currentPostTestIndex < postTestQuestions.length - 1) {
       setCurrentPostTestIndex(currentPostTestIndex + 1);
     } else {
       const result = calculateStressLevel(newAnswers);
       setStressLevel(result);
       setCurrentView('result');
+
+      // Save user answers to Supabase
+      const userData = {
+        userInfo: userInfo,
+        preTestAnswers: answers,
+        postTestAnswers: newAnswers,
+        stressLevel: result,
+        timestamp: new Date().toISOString()
+      };
+
+      try {
+        await supabaseService.saveUserAnswers(userData);
+      } catch (error) {
+        alert('Gagal menyimpan jawaban ke server. Jawaban akan disimpan secara lokal.');
+        const existingData = JSON.parse(localStorage.getItem('userAnswers') || '[]');
+        existingData.push(userData);
+        localStorage.setItem('userAnswers', JSON.stringify(existingData));
+      }
     }
   };
 
@@ -143,6 +171,7 @@ return { level: "Sangat Membantu", color: "text-orange-600", description: "Tingk
       {currentView === 'result' && <Result stressLevel={stressLevel} resetCustomerJourney={resetCustomerJourney} />}
       {currentView === 'admin' && <AdminPanel questions={questions} setQuestions={setQuestions} setIsAdmin={setIsAdmin} setCurrentView={setCurrentView} />}
       {showPasswordModal && <PasswordModal adminPassword={adminPassword} setAdminPassword={setAdminPassword} handleAdminLogin={handleAdminLogin} setShowPasswordModal={setShowPasswordModal} />}
+      {showUserInfoModal && <UserInfoModal show={showUserInfoModal} onClose={() => setShowUserInfoModal(false)} onSave={handleUserInfoSubmit} />}
       {selectedArticle && <ArticleDetailModal article={selectedArticle} onClose={() => setSelectedArticle(null)} />}
     </div>
   );

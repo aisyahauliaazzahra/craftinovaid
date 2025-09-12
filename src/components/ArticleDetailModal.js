@@ -9,8 +9,8 @@ const ArticleDetailModal = ({ article, onClose }) => {
         <div className="flex justify-between items-start mb-6">
           <div>
             <div className="text-3xl mb-2">{article.image}</div>
-            <h2 className="text-2xl font-bold text-gray-800">{article.title}</h2>
-            <div className="flex items-center text-sm text-gray-500 mt-2">
+            <h2 className="text-2xl font-bold text-teal-800">{article.title}</h2>
+            <div className="flex items-center text-sm text-teal-600 mt-2">
               <span>{article.date}</span>
               <span className="mx-2">•</span>
               <span>{article.readTime}</span>
@@ -18,12 +18,12 @@ const ArticleDetailModal = ({ article, onClose }) => {
           </div>
           <button
             onClick={onClose}
-            className="text-gray-400 hover:text-gray-600"
+            className="text-teal-400 hover:text-teal-600"
           >
             <span className="text-2xl">×</span>
           </button>
         </div>
-        <div className="text-gray-700 leading-relaxed">
+        <div className="text-teal-700 leading-relaxed">
           {article.content}
         </div>
       </div>

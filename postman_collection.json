@@ -1,0 +1,174 @@
+{
+  "info": {
+    "name": "Craftinova Supabase API",
+    "description": "Postman collection for testing Craftinova Supabase endpoints",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "variable": [
+    {
+      "key": "supabase_url",
+      "value": "https://aoggqidvydajwqttnemi.supabase.co",
+      "type": "string"
+    },
+    {
+      "key": "supabase_anon_key",
+      "value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImFvZ2dxaWR2eWRhandxdHRuZW1pIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTc2Nzg4MjgsImV4cCI6MjA3MzI1NDgyOH0.PMzgvY-stiVp7rorrgRG5gt1T7WryrGF749JuDIOwAU",
+      "type": "string"
+    }
+  ],
+  "item": [
+    {
+      "name": "Save User Answers",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          },
+          {
+            "key": "apikey",
+            "value": "{{supabase_anon_key}}"
+          },
+          {
+            "key": "Authorization",
+            "value": "Bearer {{supabase_anon_key}}"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"user_info\": {\n    \"name\": \"John Doe\",\n    \"email\": \"john@example.com\",\n    \"age\": 25,\n    \"gender\": \"Male\"\n  },\n  \"pre_test_answers\": [0, 1, 2, 3, 4],\n  \"post_test_answers\": [1, 2, 3, 4, 0],\n  \"stress_level\": {\n    \"level\": \"Moderate\",\n    \"description\": \"Moderate stress level detected\",\n    \"color\": \"text-yellow-600\"\n  }\n}"
+        },
+        "url": {
+          "raw": "{{supabase_url}}/rest/v1/user_answers",
+          "host": ["{{supabase_url}}"],
+          "path": ["rest", "v1", "user_answers"]
+        }
+      }
+    },
+    {
+      "name": "Get All User Answers",
+      "request": {
+        "method": "GET",
+        "header": [
+          {
+            "key": "apikey",
+            "value": "{{supabase_anon_key}}"
+          },
+          {
+            "key": "Authorization",
+            "value": "Bearer {{supabase_anon_key}}"
+          }
+        ],
+        "url": {
+          "raw": "{{supabase_url}}/rest/v1/user_answers?select=*&order=created_at.desc",
+          "host": ["{{supabase_url}}"],
+          "path": ["rest", "v1", "user_answers"],
+          "query": [
+            {
+              "key": "select",
+              "value": "*"
+            },
+            {
+              "key": "order",
+              "value": "created_at.desc"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "name": "Get User Answer by ID",
+      "request": {
+        "method": "GET",
+        "header": [
+          {
+            "key": "apikey",
+            "value": "{{supabase_anon_key}}"
+          },
+          {
+            "key": "Authorization",
+            "value": "Bearer {{supabase_anon_key}}"
+          }
+        ],
+        "url": {
+          "raw": "{{supabase_url}}/rest/v1/user_answers?id=eq.YOUR_RECORD_ID&select=*",
+          "host": ["{{supabase_url}}"],
+          "path": ["rest", "v1", "user_answers"],
+          "query": [
+            {
+              "key": "id",
+              "value": "eq.YOUR_RECORD_ID"
+            },
+            {
+              "key": "select",
+              "value": "*"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "name": "Update User Answer",
+      "request": {
+        "method": "PATCH",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          },
+          {
+            "key": "apikey",
+            "value": "{{supabase_anon_key}}"
+          },
+          {
+            "key": "Authorization",
+            "value": "Bearer {{supabase_anon_key}}"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"stress_level\": {\n    \"level\": \"High\",\n    \"description\": \"High stress level detected\",\n    \"color\": \"text-red-600\"\n  }\n}"
+        },
+        "url": {
+          "raw": "{{supabase_url}}/rest/v1/user_answers?id=eq.YOUR_RECORD_ID",
+          "host": ["{{supabase_url}}"],
+          "path": ["rest", "v1", "user_answers"],
+          "query": [
+            {
+              "key": "id",
+              "value": "eq.YOUR_RECORD_ID"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "name": "Delete User Answer",
+      "request": {
+        "method": "DELETE",
+        "header": [
+          {
+            "key": "apikey",
+            "value": "{{supabase_anon_key}}"
+          },
+          {
+            "key": "Authorization",
+            "value": "Bearer {{supabase_anon_key}}"
+          }
+        ],
+        "url": {
+          "raw": "{{supabase_url}}/rest/v1/user_answers?id=eq.YOUR_RECORD_ID",
+          "host": ["{{supabase_url}}"],
+          "path": ["rest", "v1", "user_answers"],
+          "query": [
+            {
+              "key": "id",
+              "value": "eq.YOUR_RECORD_ID"
+            }
+          ]
+        }
+      }
+    }
+  ]
+}

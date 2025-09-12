@@ -1,9 +1,27 @@
-import React, { useState } from 'react';
-import { Home, Plus, Edit3, Trash2, Save } from 'lucide-react';
+import React, { useState, useEffect } from 'react';
+import { Home, Plus, Edit3, Trash2, Save, Users } from 'lucide-react';
+import { initialQuestions, postTestQuestions } from '../data/appData';
+import { supabaseService } from '../services/supabaseService';
 
 const AdminPanel = ({ questions, setQuestions, setIsAdmin, setCurrentView }) => {
   const [newQuestion, setNewQuestion] = useState({ question: '', options: ['', '', '', ''] });
   const [editingQuestion, setEditingQuestion] = useState(null);
+  const [userAnswers, setUserAnswers] = useState([]);
+  const [selectedUser, setSelectedUser] = useState(null);
+
+  useEffect(() => {
+    const fetchUserAnswers = async () => {
+      try {
+        const data = await supabaseService.getAllUserAnswers();
+        setUserAnswers(data);
+      } catch (error) {
+        console.error('Failed to fetch user answers from Supabase:', error);
+        const localData = JSON.parse(localStorage.getItem('userAnswers') || '[]');
+        setUserAnswers(localData);
+      }
+    };
+    fetchUserAnswers();
+  }, []);
 
   // Admin functions
   const addQuestion = () => {
@@ -49,14 +67,14 @@ const AdminPanel = ({ questions, setQuestions, setIsAdmin, setCurrentView }) => 
         <div className="flex space-x-2">
           <button
             onClick={() => onSave(editedQuestion)}
-            className="bg-green-600 text-white py-1 px-3 rounded flex items-center space-x-1"
+            className="bg-teal-600 text-white py-1 px-3 rounded flex items-center space-x-1 hover:bg-teal-700"
           >
             <Save className="w-4 h-4" />
             <span>Simpan</span>
           </button>
           <button
             onClick={onCancel}
-            className="bg-gray-600 text-white py-1 px-3 rounded"
+            className="bg-gray-600 text-white py-1 px-3 rounded hover:bg-gray-700"
           >
             Batal
           </button>
@@ -66,15 +84,15 @@ const AdminPanel = ({ questions, setQuestions, setIsAdmin, setCurrentView }) => 
   };
 
   return (
-    <div className="min-h-screen bg-gray-50">
+    <div className="min-h-screen bg-teal-50">
       <div className="bg-white shadow-sm border-b">
         <div className="max-w-7xl mx-auto px-6 py-4">
           <div className="flex justify-between items-center">
-            <h1 className="text-2xl font-bold text-gray-800">Admin Dashboard</h1>
+            <h1 className="text-2xl font-bold text-teal-800">Admin Dashboard</h1>
             <div className="space-x-4">
               <button
                 onClick={() => {setIsAdmin(false); setCurrentView('home');}}
-                className="text-gray-600 hover:text-gray-800"
+                className="text-teal-600 hover:text-teal-800"
               >
                 <Home className="w-6 h-6" />
               </button>
@@ -82,85 +100,132 @@ const AdminPanel = ({ questions, setQuestions, setIsAdmin, setCurrentView }) => 
           </div>
         </div>
       </div>
-      
-      <div className="max-w-7xl mx-auto px-6 py-8">
-        <div className="bg-white rounded-xl shadow-sm p-6 mb-8">
-          <h2 className="text-xl font-bold text-gray-800 mb-4">Tambah Pertanyaan Baru</h2>
-          <div className="space-y-4">
-            <input
-              type="text"
-              placeholder="Pertanyaan"
-              value={newQuestion.question}
-              onChange={(e) => setNewQuestion({...newQuestion, question: e.target.value})}
-              className="w-full p-3 border rounded-lg"
-            />
-            {newQuestion.options.map((option, index) => (
-              <input
-                key={index}
-                type="text"
-                placeholder={`Opsi ${index + 1}`}
-                value={option}
-                onChange={(e) => {
-                  const newOptions = [...newQuestion.options];
-                  newOptions[index] = e.target.value;
-                  setNewQuestion({...newQuestion, options: newOptions});
-                }}
-                className="w-full p-3 border rounded-lg"
-              />
-            ))}
-            <button
-              onClick={addQuestion}
-              className="bg-blue-600 text-white py-2 px-4 rounded-lg hover:bg-blue-700 flex items-center space-x-2"
-            >
-              <Plus className="w-4 h-4" />
-              <span>Tambah Pertanyaan</span>
-            </button>
-          </div>
+
+        <div className="bg-white rounded-xl shadow-sm p-6 m-6">
+          <h2 className="text-xl font-bold text-teal-800 mb-4 flex items-center space-x-2">
+            <Users className="w-5 h-5 text-teal-600" />
+            <span>Jawaban User</span>
+          </h2>
+          {userAnswers.length === 0 ? (
+            <p className="text-teal-500">Belum ada jawaban user.</p>
+          ) : (
+            <div className="overflow-x-auto">
+              <table className="min-w-full table-auto border-collapse border border-teal-200">
+                <thead>
+                  <tr className="bg-teal-100">
+                    <th className="border border-teal-200 px-4 py-2 text-left text-teal-800">Timestamp</th>
+                    <th className="border border-teal-200 px-4 py-2 text-left text-teal-800">Nama</th>
+                    <th className="border border-teal-200 px-4 py-2 text-left text-teal-800">Usia</th>
+                    <th className="border border-teal-200 px-4 py-2 text-left text-teal-800">Pekerjaan</th>
+                    <th className="border border-teal-200 px-4 py-2 text-left text-teal-800">Asal</th>
+                    <th className="border border-teal-200 px-4 py-2 text-left text-teal-800">Tingkat Stress</th>
+                    <th className="border border-teal-200 px-4 py-2 text-center text-teal-800">Aksi</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {userAnswers.map((user, index) => (
+                    <tr key={index} className="hover:bg-teal-50">
+                      <td className="border border-teal-200 px-4 py-2 text-sm text-teal-600">
+                        {new Date(user.timestamp).toLocaleString()}
+                      </td>
+                      <td className="border border-teal-200 px-4 py-2 text-sm text-teal-600">
+                        {user.userInfo?.nama || '-'}
+                      </td>
+                      <td className="border border-teal-200 px-4 py-2 text-sm text-teal-600">
+                        {user.userInfo?.usia || '-'}
+                      </td>
+                      <td className="border border-teal-200 px-4 py-2 text-sm text-teal-600">
+                        {user.userInfo?.pekerjaan || '-'}
+                      </td>
+                      <td className="border border-teal-200 px-4 py-2 text-sm text-teal-600">
+                        {user.userInfo?.asal || '-'}
+                      </td>
+                      <td className="border border-teal-200 px-4 py-2 text-sm">
+                        <span className={`font-medium ${user.stressLevel.color}`}>
+                          {user.stressLevel.level}
+                        </span>
+                      </td>
+                      <td className="border border-teal-200 px-4 py-2 text-center">
+                        <button
+                          onClick={() => setSelectedUser(user)}
+                          className="bg-teal-600 text-white px-3 py-1 rounded hover:bg-teal-700 text-sm"
+                        >
+                          View Detail
+                        </button>
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+          )}
         </div>
-        
-        <div className="bg-white rounded-xl shadow-sm p-6">
-          <h2 className="text-xl font-bold text-gray-800 mb-4">Daftar Pertanyaan</h2>
-          <div className="space-y-4">
-            {questions.map((question) => (
-              <div key={question.id} className="border rounded-lg p-4">
-                {editingQuestion === question.id ? (
-                  <EditQuestionForm
-                    question={question}
-                    onSave={(updatedQuestion) => updateQuestion(question.id, updatedQuestion)}
-                    onCancel={() => setEditingQuestion(null)}
-                  />
-                ) : (
-                  <div>
-                    <h3 className="font-semibold mb-2">{question.question}</h3>
-                    <ul className="text-sm text-gray-600 mb-3">
-                      {question.options.map((option, index) => (
-                        <li key={index}>• {option}</li>
-                      ))}
-                    </ul>
-                    <div className="flex space-x-2">
-                      <button
-                        onClick={() => setEditingQuestion(question.id)}
-                        className="text-blue-600 hover:text-blue-800 flex items-center space-x-1"
-                      >
-                        <Edit3 className="w-4 h-4" />
-                        <span>Edit</span>
-                      </button>
-                      <button
-                        onClick={() => deleteQuestion(question.id)}
-                        className="text-red-600 hover:text-red-800 flex items-center space-x-1"
-                      >
-                        <Trash2 className="w-4 h-4" />
-                        <span>Hapus</span>
-                      </button>
-                    </div>
-                  </div>
-                )}
+
+        {/* Detail Modal */}
+        {selectedUser && (
+          <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-6 z-50">
+            <div className="bg-white rounded-2xl p-8 max-w-4xl w-full max-h-[90vh] overflow-y-auto">
+              <div className="flex justify-between items-center mb-6">
+                <h3 className="text-xl font-bold text-teal-800">Detail Jawaban User</h3>
+                <button
+                  onClick={() => setSelectedUser(null)}
+                  className="text-teal-600 hover:text-teal-800 text-2xl"
+                >
+                  ×
+                </button>
               </div>
-            ))}
+
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
+                <div>
+                  <h4 className="font-semibold text-teal-700 mb-2">Informasi User</h4>
+                  <div className="space-y-2 text-sm">
+                    <p><span className="font-medium">Nama:</span> {selectedUser.userInfo?.nama || '-'}</p>
+                    <p><span className="font-medium">Usia:</span> {selectedUser.userInfo?.usia || '-'} tahun</p>
+                    <p><span className="font-medium">Pekerjaan:</span> {selectedUser.userInfo?.pekerjaan || '-'}</p>
+                    <p><span className="font-medium">Asal:</span> {selectedUser.userInfo?.asal || '-'}</p>
+                    <p><span className="font-medium">Timestamp:</span> {new Date(selectedUser.timestamp).toLocaleString()}</p>
+                    <p><span className="font-medium">Tingkat Stress:</span> <span className={`font-medium ${selectedUser.stressLevel.color}`}>{selectedUser.stressLevel.level}</span></p>
+                  </div>
+                </div>
+              </div>
+
+              <div className="space-y-6">
+                <div>
+                  <h4 className="font-semibold text-teal-700 mb-3">Pre-Test Answers</h4>
+                  <div className="space-y-2">
+                    {selectedUser.preTestAnswers.map((answer, i) => {
+                      const question = initialQuestions[i];
+                      const optionText = question && question.options[answer - 1];
+                      return (
+                        <div key={i} className="border border-teal-200 rounded p-3 bg-teal-50">
+                          <p className="font-medium text-teal-800 mb-1">{question ? question.question : `Pertanyaan ${i + 1}`}</p>
+                          <p className="text-teal-600">{optionText || answer}</p>
+                        </div>
+                      );
+                    })}
+                  </div>
+                </div>
+
+                <div>
+                  <h4 className="font-semibold text-teal-700 mb-3">Post-Test Answers</h4>
+                  <div className="space-y-2">
+                    {selectedUser.postTestAnswers.map((answer, i) => {
+                      const question = postTestQuestions[i];
+                      const optionText = question && question.options[answer - 1];
+                      return (
+                        <div key={i} className="border border-teal-200 rounded p-3 bg-teal-50">
+                          <p className="font-medium text-teal-800 mb-1">{question ? question.question : `Pertanyaan ${i + 1}`}</p>
+                          <p className="text-teal-600">{optionText || answer}</p>
+                        </div>
+                      );
+                    })}
+                  </div>
+                </div>
+              </div>
+            </div>
           </div>
-        </div>
+        )}
       </div>
-    </div>
   );
 };
 

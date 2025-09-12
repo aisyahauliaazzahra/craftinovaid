@@ -1,11 +1,11 @@
 import React, { useState } from 'react';
 import { BarChart3, Menu, X } from 'lucide-react';
 
-const Header = ({ 
-  companyInfo = { name: 'Company Name', tagline: 'Your Tagline' }, 
-  setCurrentView = () => {}, 
-  setShowPasswordModal = () => {}, 
-  activeView = 'home' 
+const Header = ({
+  companyInfo = { name: 'Company Name', tagline: 'Your Tagline' },
+  setCurrentView = () => {},
+  setShowPasswordModal = () => {},
+  activeView = 'home'
 }) => {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
@@ -17,7 +17,11 @@ const Header = ({
   ];
 
   const handleNavClick = (key) => {
-    setCurrentView(key);
+    if (key === 'admin') {
+      setShowPasswordModal(true);
+    } else {
+      setCurrentView(key);
+    }
     setIsMobileMenuOpen(false); // Tutup menu mobile setelah item dipilih
   };
 
@@ -27,12 +31,12 @@ const Header = ({
         <div className="flex justify-between items-center">
           {/* Logo dan Company Info */}
           <div className="flex items-center space-x-3">
-            <div className="w-8 h-8 sm:w-10 sm:h-10 bg-gradient-to-r from-blue-500 to-indigo-600 rounded-lg flex items-center justify-center">
+            <div className="w-8 h-8 sm:w-10 sm:h-10 bg-gradient-to-r from-teal-500 to-cyan-600 rounded-lg flex items-center justify-center">
               <BarChart3 className="w-4 h-4 sm:w-6 sm:h-6 text-white" />
             </div>
             <div>
-              <h1 className="text-lg sm:text-xl font-bold text-gray-800">{companyInfo.name}</h1>
-              <p className="text-xs text-gray-600 hidden sm:block">{companyInfo.tagline}</p>
+              <h1 className="text-lg sm:text-xl font-bold text-teal-800">{companyInfo.name}</h1>
+              <p className="text-xs text-teal-600 hidden sm:block">{companyInfo.tagline}</p>
             </div>
           </div>
 
@@ -44,8 +48,8 @@ const Header = ({
                 onClick={() => handleNavClick(item.key)}
                 className={`transition-colors duration-200 ${
                   activeView === item.key
-                    ? 'text-blue-600 font-semibold'
-                    : 'text-gray-600 hover:text-blue-600'
+                    ? 'text-teal-600 font-semibold'
+                    : 'text-gray-600 hover:text-teal-600'
                 }`}
               >
                 {item.label}
@@ -77,8 +81,8 @@ const Header = ({
                   onClick={() => handleNavClick(item.key)}
                   className={`text-left px-2 py-2 rounded-lg transition-colors duration-200 ${
                     activeView === item.key
-                      ? 'text-blue-600 font-semibold bg-blue-50'
-                      : 'text-gray-600 hover:text-blue-600 hover:bg-gray-50'
+                      ? 'text-teal-600 font-semibold bg-teal-50'
+                      : 'text-gray-600 hover:text-teal-600 hover:bg-gray-50'
                   }`}
                 >
                   {item.label}

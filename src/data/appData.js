@@ -83,7 +83,7 @@ export const products = {
     "Menghasilkan 3 produk fungsional sekaligus",
     "Berkontribusi pada lingkungan dengan upcycling",
     "Meningkatkan fokus dan mindfulness"
-  ],
+  ], 
   image: "🎨",
   shopeeLink: "https://shopee.co.id/craftinova-diy-kit" // Ganti dengan link Shopee yang sebenarnya
 };
