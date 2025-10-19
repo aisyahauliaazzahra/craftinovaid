@@ -20,7 +20,6 @@ export const articles = [
     excerpt: "Mengenal lebih dalam tentang art therapy dan bagaimana aktivitas kreatif dapat membantu menenangkan pikiran...",
     image: "🎨",
     date: "15 Agustus 2025",
-    readTime: "5 min",
     content: "Art therapy telah terbukti secara ilmiah dapat mengurangi tingkat stress dan kecemasan. Melalui aktivitas kreatif seperti melukis, menjahit, atau kerajinan tangan, otak melepaskan hormon endorfin yang memberikan perasaan tenang dan bahagia. Craftinova menyediakan kit yang dirancang khusus untuk memaksimalkan manfaat art therapy ini."
   },
   {
@@ -29,7 +28,6 @@ export const articles = [
     excerpt: "Pelajari cara membuat kerajinan DIY sederhana yang dapat membantu meredakan stress dalam kehidupan sehari-hari...",
     image: "✂️",
     date: "12 Agustus 2025",
-    readTime: "7 min",
     content: "Kegiatan DIY craft di rumah dapat menjadi bentuk meditasi aktif yang efektif. Fokus pada detail pekerjaan tangan membantu mengalihkan pikiran dari kekhawatiran sehari-hari. Kit Craftinova dirancang dengan panduan langkah demi langkah yang mudah diikuti, sehingga siapa saja dapat merasakan manfaat terapi kreatif."
   },
   {
@@ -38,7 +36,6 @@ export const articles = [
     excerpt: "Bagaimana memanfaatkan limbah tekstil menjadi media terapi yang bermanfaat untuk kesehatan mental...",
     image: "♻️",
     date: "10 Agustus 2025",
-    readTime: "8 min",
     content: "Menggunakan limbah tekstil dalam art therapy memberikan manfaat ganda: mengurangi sampah lingkungan sekaligus meningkatkan kesehatan mental. Tekstur dan warna kain bekas memberikan stimulasi sensorik yang menenangkan. Craftinova berkomitmen menggunakan bahan daur ulang berkualitas untuk setiap kit yang diproduksi."
   },
   {
@@ -47,7 +44,6 @@ export const articles = [
     excerpt: "Praktik mindfulness melalui kegiatan crafting yang dapat membantu mencapai ketenangan mental...",
     image: "🧘‍♀️",
     date: "8 Agustus 2025",
-    readTime: "6 min",
     content: "Mindful crafting menggabungkan teknik mindfulness dengan aktivitas kreatif. Fokus penuh pada proses pembuatan kerajinan membantu menghilangkan pikiran negatif dan mencapai state of flow. Setiap kit Craftinova dilengkapi dengan panduan mindful crafting untuk memaksimalkan manfaat terapi."
   }
 ];
@@ -92,18 +88,18 @@ export const products = {
 export const initialQuestions = [
   {
     id: 1,
-    question: "Seberapa sering Anda merasa stres dalam seminggu terakhir?",
-    options: ["Tidak pernah", "1-2 kali", "3-4 kali", "Hampir setiap hari"]
+    question: "Dalam beberapa waktu terakhir, seberapa sering kamu merasa sulit menenangkan diri saat sedang banyak pikiran atau pekerjaan?",
+    options: ["Tidak pernah", "Jarang", "Kadang-kadang", "Sering", "Sangat sering"]
   },
   {
     id: 2,
-    question: "Aktivitas kreatif apa yang paling menarik bagi Anda?",
-    options: ["Menjahit/Bordir", "Melukis/Menggambar", "Kerajinan Tangan", "Belum pernah mencoba"]
+    question: "Dalam beberapa waktu terakhir, seberapa sering kamu merasa kewalahan dengan hal-hal yang harus kamu lakukan setiap hari?",
+    options: ["Tidak pernah", "Jarang", "Kadang-kadang", "Sering", "Sangat sering"]
   },
   {
     id: 3,
-    question: "Berapa lama waktu yang bisa Anda luangkan untuk aktivitas relaksasi?",
-    options: ["15-30 menit", "30-60 menit", "1-2 jam", "Lebih dari 2 jam"]
+    question: "Dalam beberapa waktu terakhir, seberapa sering kamu merasa bisa mengendalikan stres atau emosi ketika menghadapi situasi yang berat?",
+    options: ["Tidak pernah", "Jarang", "Kadang-kadang", "Sering", "Sangat sering"]
   }
 ];
 
@@ -111,27 +107,27 @@ export const initialQuestions = [
 export const postTestQuestions = [
   {
     id: 1,
-    question: "Setelah menonton tutorial, seberapa tertarik Anda mencoba DIY art therapy?",
-    options: ["Sangat tertarik", "Tertarik", "Cukup tertarik", "Kurang tertarik"]
+    question: "Setelah menjahit, seberapa sering Anda merasa lebih tenang atau rileks?",
+    options: ["Tidak pernah", "Jarang", "Kadang-kadang", "Sering", "Sangat sering"]
   },
   {
     id: 2,
-    question: "Apakah Anda merasa aktivitas kreatif dapat membantu mengurangi stress?",
-    options: ["Sangat yakin", "Yakin", "Mungkin", "Tidak yakin"]
+    question: "Setelah menjahit, seberapa sering Anda masih merasa stres atau tegang?",
+    options: ["Tidak pernah", "Jarang", "Kadang-kadang", "Sering", "Sangat sering"]
   },
   {
     id: 3,
-    question: "Seberapa penting bagi Anda menggunakan bahan ramah lingkungan?",
-    options: ["Sangat penting", "Penting", "Cukup penting", "Tidak terlalu penting"]
+    question: "Aktivitas menjahit dengan sewing kit ini terasa mudah dan menyenangkan bagi saya.",
+    options: ["Tidak pernah", "Jarang", "Kadang-kadang", "Sering", "Sangat sering"]
   },
   {
     id: 4,
-    question: "Bagaimana perasaan Anda saat ini setelah mengetahui tentang art therapy?",
-    options: ["Sangat tenang", "Tenang", "Biasa saja", "Masih stres"]
+    question: "Saya ingin menggunakan sewing kit ini lagi ketika merasa stres",
+    options: ["Tidak pernah", "Jarang", "Kadang-kadang", "Sering", "Sangat sering"]
   },
   {
     id: 5,
-    question: "Seberapa sering Anda berencana melakukan aktivitas crafting?",
-    options: ["Setiap hari", "Beberapa kali seminggu", "Seminggu sekali", "Sesekali saja"]
+    question: "Secara keseluruhan, menjahit membantu saya merasa lebih mampu menghadapi hal-hal yang terjadi pada diri saya",
+    options: ["Tidak pernah", "Jarang", "Kadang-kadang", "Sering", "Sangat sering"]
   }
 ];

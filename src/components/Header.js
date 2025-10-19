@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { BarChart3, Menu, X } from 'lucide-react';
+import { Menu, X, ImagePlus } from 'lucide-react';
 
 const Header = ({
   companyInfo = { name: 'Company Name', tagline: 'Your Tagline' },
@@ -11,8 +11,9 @@ const Header = ({
 
   const navItems = [
     { key: 'home', label: 'Home' },
-    { key: 'about', label: 'Tentang Kami' },
+    { key: 'about', label: 'Products' },
     { key: 'articles', label: 'Artikel' },
+    { key: 'gallery', label: 'Galeri Karya' }, // 🟢 menu baru
     { key: 'admin', label: 'Admin' },
   ];
 
@@ -22,25 +23,27 @@ const Header = ({
     } else {
       setCurrentView(key);
     }
-    setIsMobileMenuOpen(false); // Tutup menu mobile setelah item dipilih
+    setIsMobileMenuOpen(false);
   };
 
   return (
     <header className="bg-white shadow-sm sticky top-0 z-40">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 py-4">
         <div className="flex justify-between items-center">
-          {/* Logo dan Company Info */}
+          {/* Logo dan Info Perusahaan */}
           <div className="flex items-center space-x-3">
-            <div className="w-8 h-8 sm:w-10 sm:h-10 bg-gradient-to-r from-teal-500 to-cyan-600 rounded-lg flex items-center justify-center">
-              <BarChart3 className="w-4 h-4 sm:w-6 sm:h-6 text-white" />
-            </div>
+            <img
+              src="/logocraftinova.png"
+              alt="Logo"
+              className="w-8 h-8 sm:w-10 sm:h-10 object-contain"
+            />
             <div>
               <h1 className="text-lg sm:text-xl font-bold text-teal-800">{companyInfo.name}</h1>
               <p className="text-xs text-teal-600 hidden sm:block">{companyInfo.tagline}</p>
             </div>
           </div>
 
-          {/* Desktop Navigation */}
+          {/* Menu Desktop */}
           <nav className="hidden md:flex items-center space-x-8">
             {navItems.map((item) => (
               <button
@@ -57,7 +60,7 @@ const Header = ({
             ))}
           </nav>
 
-          {/* Mobile Menu Button */}
+          {/* Tombol Menu Mobile */}
           <button
             className="md:hidden p-2 rounded-lg hover:bg-gray-100 transition-colors duration-200"
             onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
@@ -71,7 +74,7 @@ const Header = ({
           </button>
         </div>
 
-        {/* Mobile Navigation Menu */}
+        {/* Menu Mobile */}
         {isMobileMenuOpen && (
           <div className="md:hidden mt-4 pb-4 border-t border-gray-200">
             <nav className="flex flex-col space-y-3 pt-4">

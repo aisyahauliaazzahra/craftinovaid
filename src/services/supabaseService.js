@@ -7,12 +7,12 @@ export const supabaseService = {
       const { data, error } = await supabase
         .from('user_answers')
         .select('count', { count: 'exact', head: true });
-      
+
       if (error) {
         console.error('Connection test failed:', error);
         return false;
       }
-      
+
       console.log('Supabase connection successful');
       return true;
     } catch (error) {
@@ -25,20 +25,19 @@ export const supabaseService = {
   async saveUserAnswers(userData) {
     try {
       console.log('Attempting to save user data:', userData);
-      
+
       // Test connection first
       const connectionOk = await this.testConnection();
       if (!connectionOk) {
         throw new Error('Unable to connect to Supabase');
       }
 
-      // Prepare data for insertion
       const dataToInsert = {
         user_info: userData.user_info,
         pre_test_answers: userData.pre_test_answers,
         post_test_answers: userData.post_test_answers,
         stress_level: userData.stress_level,
-        timestamp: userData.timestamp
+        timestamp: userData.timestamp,
       };
 
       console.log('Data to insert:', dataToInsert);
@@ -53,7 +52,7 @@ export const supabaseService = {
           message: error.message,
           details: error.details,
           hint: error.hint,
-          code: error.code
+          code: error.code,
         });
         throw error;
       }
@@ -64,7 +63,7 @@ export const supabaseService = {
       console.error('Error in saveUserAnswers:', {
         name: error.name,
         message: error.message,
-        stack: error.stack
+        stack: error.stack,
       });
       throw error;
     }
@@ -74,7 +73,7 @@ export const supabaseService = {
   async getAllUserAnswers() {
     try {
       console.log('Fetching user answers from Supabase...');
-      
+
       const { data, error } = await supabase
         .from('user_answers')
         .select('*')
@@ -89,7 +88,6 @@ export const supabaseService = {
       return data || [];
     } catch (error) {
       console.error('Error in getAllUserAnswers:', error);
-      // Fallback to localStorage if Supabase fails
       const localData = JSON.parse(localStorage.getItem('userAnswers') || '[]');
       console.log('Using localStorage fallback:', localData);
       return localData;
@@ -135,5 +133,60 @@ export const supabaseService = {
       console.error('Error in updateUserAnswer:', error);
       throw error;
     }
-  }
+  },
+
+  // ================= GALLERY FEATURES =================
+
+  // Get gallery posts
+  async getGalleryPosts() {
+    try {
+      const { data, error } = await supabase
+        .from('gallery_posts')
+        .select('*')
+        .order('created_at', { ascending: false });
+
+      return { data, error };
+    } catch (err) {
+      console.error('getGalleryPosts error:', err);
+      return { data: null, error: err };
+    }
+  },
+
+  // Upload image ke storage
+  async uploadGalleryImage(fileName, file) {
+    try {
+      const { data, error } = await supabase.storage
+        .from('gallery') // pastikan bucket sudah ada & public
+        .upload(fileName, file, { cacheControl: '3600', upsert: true });
+      return { data, error };
+    } catch (err) {
+      console.error('uploadGalleryImage error:', err);
+      return { data: null, error: err };
+    }
+  },
+
+  // Ambil public URL
+  getPublicImageUrl(fileName) {
+    try {
+      const { data } = supabase.storage.from('gallery').getPublicUrl(fileName);
+      return { publicUrl: data.publicUrl };
+    } catch (err) {
+      console.error('getPublicImageUrl error:', err);
+      return { publicUrl: '/dump.png' };
+    }
+  },
+
+  // Tambah post baru ke tabel
+  async addGalleryPost(post) {
+    try {
+      const { data, error } = await supabase
+        .from('gallery_posts')
+        .insert([post])
+        .select();
+      return { data, error };
+    } catch (err) {
+      console.error('addGalleryPost error:', err);
+      return { data: null, error: err };
+    }
+  },
 };

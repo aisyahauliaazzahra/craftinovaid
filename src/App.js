@@ -8,6 +8,7 @@ import AboutPage from './pages/AboutPage';
 import ArticlesPage from './pages/ArticlesPage';
 import ProductsPage from './pages/ProductsPage';
 import AdminPanel from './pages/AdminPanel';
+import Gallery from './pages/Gallery';
 
 // Import quiz components
 import Quiz from './components/Quiz';
@@ -51,7 +52,7 @@ const StressLevelWebsite = () => {
     const percentage = (total / maxScore) * 100;
     
     // Fixed the logic - higher scores mean MORE helpful, not less
-    if (percentage >= 75) {
+    if (percentage >= 0) {
       return { 
         level: "Sangat Membantu", 
         color: "text-green-600", 
@@ -217,6 +218,8 @@ const StressLevelWebsite = () => {
       {currentView === 'articles' && <ArticlesPage {...commonProps} articles={articles} setSelectedArticle={setSelectedArticle} />}
       {currentView === 'products' && <ProductsPage {...commonProps} products={products} />}
       {currentView === 'quiz' && <Quiz {...quizProps} />}
+      {currentView === 'gallery' && <Gallery {...commonProps} />}
+
       {currentView === 'video' && <VideoTutorial handleVideoComplete={handleVideoComplete} />}
       {currentView === 'posttest' && <PostTest {...postTestProps} />}
       {currentView === 'result' && <Result stressLevel={stressLevel} resetCustomerJourney={resetCustomerJourney} />}

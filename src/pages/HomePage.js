@@ -40,8 +40,20 @@ const HomePage = ({ setCurrentView, setShowPasswordModal, companyInfo, handleSca
           </div>
         </div>
       </section>
+     
 
       {/* Features Section */}
+            <div className="max-w-6xl mx-auto px-6 py-12">
+        {/* Section Tentang */}
+        <div className="text-center mb-16">
+          <h2 className="text-4xl font-bold text-gray-800 mb-4">
+            Tentang {companyInfo.name}
+          </h2>
+          <p className="text-xl text-gray-600 max-w-3xl mx-auto">
+            {companyInfo.description}
+          </p>
+        </div>
+        </div>
       <section className="py-20">
         <div className="max-w-7xl mx-auto px-6">
           <div className="text-center mb-16">

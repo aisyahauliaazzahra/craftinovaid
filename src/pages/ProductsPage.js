@@ -1,107 +1,154 @@
-import React from "react";
-import { ShoppingBag, CheckCircle, Package, Star } from "lucide-react";
+import React, { useState } from "react";
+import Header from '../components/Header';
+import { ShoppingBag } from "lucide-react";
 
-const ProductsPage = ({ companyInfo, product, setCurrentView, setShowPasswordModal }) => {
+const ProductsPage = () => {
+  const [currentView, setCurrentView] = useState("products");
+  const [showPasswordModal, setShowPasswordModal] = useState(false);
+
+  const companyInfo = {
+    name: "Craftinova",
+    tagline: "Temukan ketenangan lewat kreativitas",
+  };
+
+  const products = {
+    training: [
+      {
+        name: "Training Kit 1",
+        description: "Apa aja.",
+        link: "https://shopee.co.id/CRAFTINOVA-Kit-DIY-sewing-kit-Kit-Menjahit-Kain-Upcycle-Kit-Jahit-Pemula-Lengkap-Kerajinan-Tangan-Hadiah-kreatif-i.1598487836.41366419757",
+      },
+      {
+        name: "Training Kit 2",
+        description: "Berisi alat dan bahan sederhana untuk relaksasi lewat seni.",
+        link: "https://shopee.co.id/CRAFTINOVA-Kit-DIY-sewing-kit-Kit-Menjahit-Kain-Upcycle-Kit-Jahit-Pemula-Lengkap-Kerajinan-Tangan-Hadiah-kreatif-i.1598487836.41366419757",
+      },
+      {
+        name: "Training Kit 3",
+        description: "Kit dasar untuk eksplorasi kreativitas dan ketenangan diri.",
+        link: "https://shopee.co.id/CRAFTINOVA-Kit-DIY-sewing-kit-Kit-Menjahit-Kain-Upcycle-Kit-Jahit-Pemula-Lengkap-Kerajinan-Tangan-Hadiah-kreatif-i.1598487836.41366419757",
+      },
+    ],
+    middle: [
+      {
+        name: "Middle Level Kit",
+        description: "Untuk kamu yang sudah terbiasa berkreasi dan ingin tantangan baru.",
+        link: "https://shopee.co.id/CRAFTINOVA-Kit-DIY-sewing-kit-Kit-Menjahit-Kain-Upcycle-Kit-Jahit-Pemula-Lengkap-Kerajinan-Tangan-Hadiah-kreatif-i.1598487836.41366419757",
+      },
+    ],
+    advance: [
+      {
+        name: "Advance Kit",
+        description: "Paket lengkap dengan bahan premium dan teknik lanjutan.",
+        link: "https://shopee.co.id/CRAFTINOVA-Kit-DIY-sewing-kit-Kit-Menjahit-Kain-Upcycle-Kit-Jahit-Pemula-Lengkap-Kerajinan-Tangan-Hadiah-kreatif-i.1598487836.41366419757",
+      },
+    ],
+  };
+
   return (
-    <div className="min-h-screen bg-gradient-to-br from-teal-50 to-cyan-100 p-6">
-      <div className="max-w-4xl mx-auto bg-white rounded-2xl shadow-xl p-8">
-        {/* Header */}
-        <div className="flex items-center gap-4 mb-8">
-          <div className="text-5xl">{companyInfo.logo}</div>
-          <div>
-            <h1 className="text-3xl font-bold text-gray-800">{companyInfo.name}</h1>
-            <p className="text-gray-500">{companyInfo.tagline}</p>
-          </div>
-        </div>
+    <div className="min-h-screen flex flex-col bg-gradient-to-br from-teal-50 to-cyan-100">
+      {/* ✅ Header tetap di atas */}
+      <Header
+        companyInfo={companyInfo}
+        setCurrentView={setCurrentView}
+        setShowPasswordModal={setShowPasswordModal}
+        activeView={currentView}
+      />
 
-        {/* Product Info */}
-        <div className="flex flex-col md:flex-row gap-8">
-          {/* Image / Icon */}
-          <div className="flex-1 flex justify-center items-center bg-teal-50 rounded-xl p-6">
-            <span className="text-8xl">{product.image}</span>
-          </div>
-
-          {/* Details */}
-          <div className="flex-1">
-            <h2 className="text-2xl font-bold text-gray-800 mb-2">{product.name}</h2>
-            <p className="text-gray-600 mb-4">{product.description}</p>
-
-            {/* Price */}
-            <div className="flex items-center gap-3 mb-6">
-              <span className="text-3xl font-bold text-teal-600">{product.price}</span>
-              <span className="text-gray-400 line-through">{product.originalPrice}</span>
+      {/* Konten Produk */}
+      <main className="flex-grow p-6 mt-6">
+        <div className="max-w-6xl mx-auto">
+          {/* Training Section */}
+          <section className="mb-16">
+            <h2 className="text-2xl font-bold text-teal-700 mb-6 text-center">
+              🌱 Training Kit
+            </h2>
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+              {products.training.map((item, i) => (
+                <a
+                  key={i}
+                  href={item.link}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="bg-white rounded-2xl shadow-md hover:shadow-lg transition-all p-5 flex flex-col items-center text-center group"
+                >
+                  <img
+                    src="/bookmarksss.png"
+                    alt={item.name}
+                    className="w-32 h-32 object-contain mb-4 transition-transform duration-300 group-hover:scale-105"
+                  />
+                  <h3 className="text-lg font-semibold text-gray-800">{item.name}</h3>
+                  <p className="text-gray-500 text-sm mt-2">{item.description}</p>
+                  <div className="mt-4 inline-flex items-center gap-2 bg-gradient-to-r from-teal-500 to-cyan-600 text-white py-2 px-4 rounded-xl font-medium hover:from-teal-600 hover:to-cyan-700 transition-all">
+                    <ShoppingBag className="w-4 h-4" />
+                    Beli Sekarang
+                  </div>
+                </a>
+              ))}
             </div>
+          </section>
 
-            {/* Shopee Button */}
-            <a
-              href={product.shopeeLink}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="w-full md:w-auto inline-flex items-center justify-center gap-2 bg-gradient-to-r from-teal-500 to-cyan-600 text-white py-3 px-6 rounded-xl font-semibold hover:from-teal-600 hover:to-cyan-700 transition-all"
-            >
-              <ShoppingBag className="w-5 h-5" />
-              Beli di Shopee
-            </a>
-          </div>
-        </div>
+          {/* Middle Section */}
+          <section className="mb-16">
+            <h2 className="text-2xl font-bold text-teal-700 mb-6 text-center">
+              💎 Middle Kit
+            </h2>
+            <div className="flex justify-center">
+              {products.middle.map((item, i) => (
+                <a
+                  key={i}
+                  href={item.link}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="bg-white rounded-2xl shadow-md hover:shadow-lg transition-all p-6 w-full sm:w-3/4 lg:w-2/3 flex flex-col items-center text-center group"
+                >
+                  <img
+                    src="/cablestrap.png"
+                    alt={item.name}
+                    className="w-40 h-40 object-contain mb-4 transition-transform duration-300 group-hover:scale-105"
+                  />
+                  <h3 className="text-xl font-semibold text-gray-800">{item.name}</h3>
+                  <p className="text-gray-500 text-sm mt-2 mb-4">{item.description}</p>
+                  <div className="inline-flex items-center gap-2 bg-gradient-to-r from-teal-500 to-cyan-600 text-white py-2 px-5 rounded-xl font-medium hover:from-teal-600 hover:to-cyan-700 transition-all">
+                    <ShoppingBag className="w-4 h-4" />
+                    Lihat Produk
+                  </div>
+                </a>
+              ))}
+            </div>
+          </section>
 
-        {/* Kit Contents */}
-        <div className="mt-10">
-          <h3 className="text-xl font-bold text-gray-800 mb-4 flex items-center gap-2">
-            <Package className="w-5 h-5 text-purple-600" />
-            Isi Kit
-          </h3>
-          <ul className="grid grid-cols-1 md:grid-cols-2 gap-3">
-            {product.kitContents.map((item, index) => (
-              <li key={index} className="flex items-center gap-2 text-gray-700">
-                <CheckCircle className="w-4 h-4 text-green-500" />
-                {item}
-              </li>
-            ))}
-          </ul>
+          {/* Advance Section */}
+          <section>
+            <h2 className="text-2xl font-bold text-teal-700 mb-6 text-center">
+              🚀 Advance Kit
+            </h2>
+            <div className="flex justify-center">
+              {products.advance.map((item, i) => (
+                <a
+                  key={i}
+                  href={item.link}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="bg-white rounded-2xl shadow-md hover:shadow-lg transition-all p-6 w-full sm:w-3/4 lg:w-2/3 flex flex-col items-center text-center group"
+                >
+                  <img
+                    src="/minipouch.png"
+                    alt={item.name}
+                    className="w-40 h-40 object-contain mb-4 transition-transform duration-300 group-hover:scale-105"
+                  />
+                  <h3 className="text-xl font-semibold text-gray-800">{item.name}</h3>
+                  <p className="text-gray-500 text-sm mt-2 mb-4">{item.description}</p>
+                  <div className="inline-flex items-center gap-2 bg-gradient-to-r from-teal-500 to-cyan-600 text-white py-2 px-5 rounded-xl font-medium hover:from-teal-600 hover:to-cyan-700 transition-all">
+                    <ShoppingBag className="w-4 h-4" />
+                    Lihat Produk
+                  </div>
+                </a>
+              ))}
+            </div>
+          </section>
         </div>
-
-        {/* Features */}
-        <div className="mt-10">
-          <h3 className="text-xl font-bold text-gray-800 mb-4 flex items-center gap-2">
-            <Star className="w-5 h-5 text-yellow-500" />
-            Keunggulan
-          </h3>
-          <ul className="grid grid-cols-1 md:grid-cols-2 gap-3">
-            {product.features.map((item, index) => (
-              <li key={index} className="flex items-center gap-2 text-gray-700">
-                <CheckCircle className="w-4 h-4 text-green-500" />
-                {item}
-              </li>
-            ))}
-          </ul>
-        </div>
-
-        {/* Benefits */}
-        <div className="mt-10">
-          <h3 className="text-xl font-bold text-gray-800 mb-4 flex items-center gap-2">
-            <Star className="w-5 h-5 text-pink-500" />
-            Manfaat
-          </h3>
-          <ul className="grid grid-cols-1 md:grid-cols-2 gap-3">
-            {product.benefits.map((item, index) => (
-              <li key={index} className="flex items-center gap-2 text-gray-700">
-                <CheckCircle className="w-4 h-4 text-green-500" />
-                {item}
-              </li>
-            ))}
-          </ul>
-        </div>
-
-        {/* Guarantee */}
-        <div className="mt-12 p-6 bg-gradient-to-r from-purple-100 to-pink-100 rounded-xl text-center">
-          <h3 className="text-lg font-bold text-gray-800 mb-2">✨ Jaminan Kepuasan ✨</h3>
-          <p className="text-gray-600">
-            Craftinova percaya bahwa setiap orang bisa menemukan ketenangan lewat kreativitas. 
-            Jika kamu merasa kit ini tidak membantu, hubungi kami untuk solusi terbaik 💜
-          </p>
-        </div>
-      </div>
+      </main>
     </div>
   );
 };
