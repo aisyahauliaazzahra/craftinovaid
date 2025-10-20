@@ -37,7 +37,6 @@ export const supabaseService = {
         pre_test_answers: userData.pre_test_answers,
         post_test_answers: userData.post_test_answers,
         stress_level: userData.stress_level,
-        timestamp: userData.timestamp,
       };
 
       console.log('Data to insert:', dataToInsert);

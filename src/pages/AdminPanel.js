@@ -191,7 +191,6 @@ const AdminPanel = ({ questions, setQuestions, setIsAdmin, setCurrentView }) => 
                     <p><span className="font-medium">Usia:</span> {selectedUser.user_info?.usia || '-'} tahun</p>
                     <p><span className="font-medium">Pekerjaan:</span> {selectedUser.user_info?.pekerjaan || '-'}</p>
                     <p><span className="font-medium">Asal:</span> {selectedUser.user_info?.asal || '-'}</p>
-                    <p><span className="font-medium">Timestamp:</span> {new Date(selectedUser.timestamp || selectedUser.created_at).toLocaleString()}</p>
                     <p><span className="font-medium">Tingkat Stress:</span> <span className={`font-medium ${selectedUser.stress_level?.color || 'text-gray-500'}`}>{selectedUser.stress_level?.level || 'N/A'}</span></p>
                   </div>
                 </div>

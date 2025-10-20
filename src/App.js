@@ -46,35 +46,43 @@ const StressLevelWebsite = () => {
   const [selectedArticle, setSelectedArticle] = useState(null);
 
   // Calculate stress level - FIXED LOGIC
-  const calculateStressLevel = (answers) => {
-    const total = answers.reduce((sum, answer) => sum + answer, 0);
-    const maxScore = postTestQuestions.length * 4;
-    const percentage = (total / maxScore) * 100;
-    
-    // Fixed the logic - higher scores mean MORE helpful, not less
-    if (percentage >= 0) {
-      return { 
-        level: "Sangat Membantu", 
-        color: "text-green-600", 
-        description: "Craftinova sangat membantu mengurangi stress Anda.",
-        result: "Sangat Membantu"
-      };
-    } else if (percentage >= 50) {
-      return { 
-        level: "Cukup Membantu", 
-        color: "text-yellow-600", 
-        description: "Craftinova cukup membantu mengurangi stress Anda.",
-        result: "Cukup Membantu"
-      };
-    } else {
-      return { 
-        level: "Kurang Membantu", 
-        color: "text-red-600", 
-        description: "Craftinova kurang membantu mengurangi stress. Mungkin Anda perlu mencoba pendekatan lain.",
-        result: "Kurang Membantu"
-      };
-    }
-  };
+const calculateStressLevel = (answers) => {
+  const total = answers.reduce((sum, answer) => sum + answer, 0);
+  const maxScore = postTestQuestions.length * 4;
+  const percentage = (total / maxScore) * 100;
+
+  // Logika yang benar: semakin tinggi skor, semakin membantu
+  if (percentage >= 75) {
+    return {
+      level: "Sangat Membantu",
+      color: "text-green-600",
+      description: "Craftinova sangat membantu mengurangi stress Anda.",
+      result: "Sangat Membantu",
+    };
+  } else if (percentage >= 50) {
+    return {
+      level: "Cukup Membantu",
+      color: "text-yellow-600",
+      description: "Craftinova cukup membantu mengurangi stress Anda.",
+      result: "Cukup Membantu",
+    };
+  } else if (percentage >= 25) {
+    return {
+      level: "Tidak Membantu",
+      color: "text-orange-600",
+      description: "Craftinova tidak membantu mengurangi stress Anda. Cobalah pendekatan lain untuk relaksasi.",
+      result: "Tidak Membantu",
+    };
+  } else {
+    return {
+      level: "Tidak Membantu",
+      color: "text-red-600",
+      description:
+        "Craftinova tidak membantu mengurangi stress Anda. Cobalah pendekatan lain untuk relaksasi.",
+      result: "Tidak Membantu",
+    };
+  }
+};
 
   // Admin login
   const handleAdminLogin = () => {

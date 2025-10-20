@@ -14,7 +14,6 @@ const Header = ({
     { key: 'about', label: 'Products' },
     { key: 'articles', label: 'Artikel' },
     { key: 'gallery', label: 'Galeri Karya' }, // 🟢 menu baru
-    { key: 'admin', label: 'Admin' },
   ];
 
   const handleNavClick = (key) => {

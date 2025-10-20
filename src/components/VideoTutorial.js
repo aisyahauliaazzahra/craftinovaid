@@ -11,24 +11,18 @@ const VideoTutorial = ({ handleVideoComplete }) => {
   const videos = [
     {
       id: "video1",
-      youtubeId: "wafWlDIe19s",
-      title: "Pengenalan Art Therapy dan Persiapan Material",
-      description: "Memahami konsep dasar art therapy dan menyiapkan bahan-bahan limbah tekstil yang diperlukan untuk kerajinan mindful.",
-      duration: "8 menit"
+      youtubeId: "H_yxAO6TgCI",
+      title: "Tutorial membuat gantungan kunci",
     },
     {
       id: "video2", 
       youtubeId: "elh-kIQ_Bos",
-      title: "Teknik Dasar Pengolahan Limbah Tekstil",
-      description: "Tutorial step-by-step tentang cara memilah, membersihkan, dan mempersiapkan limbah tekstil untuk dijadikan karya seni.",
-      duration: "12 menit"
+      title: "Tutorial membuat scrunchie",
     },
     {
       id: "video3",
-      youtubeId: "H_yxAO6TgCI", 
-      title: "Membuat Karya Seni dan Refleksi Mindful",
-      description: "Proses kreatif membuat kerajinan dari limbah tekstil sambil melakukan praktik mindfulness dan refleksi diri.",
-      duration: "15 menit"
+      youtubeId: "wafWlDIe19s", 
+      title: "Tutorial membuat pouch",
     }
   ];
 
@@ -46,10 +40,10 @@ const VideoTutorial = ({ handleVideoComplete }) => {
     <div className="min-h-screen bg-gradient-to-br from-teal-50 to-cyan-100 p-6">
       <div className="max-w-6xl mx-auto">
         <div className="bg-white rounded-2xl shadow-xl p-8 mb-6">
-          <h2 className="text-3xl font-bold text-gray-800 mb-4 text-center">Tutorial DIY Art Therapy Series</h2>
+          <h2 className="text-3xl font-bold text-gray-800 mb-4 text-center">Tutorial DIY Craftinova Kit</h2>
           <p className="text-center text-gray-600 mb-8 max-w-3xl mx-auto">
-            Ikuti serangkaian tutorial lengkap tentang art therapy menggunakan limbah tekstil. 
-            Tonton ketiga video secara berurutan untuk mendapatkan pengalaman pembelajaran yang optimal.
+            Ikuti serangkaian tutorial lengkap tentang DIY Craftinova Kit. 
+            Tonton ketiga video untuk mempermudah membuat kit.
           </p>
           
           {/* Progress Indicator */}
@@ -138,7 +132,7 @@ const VideoTutorial = ({ handleVideoComplete }) => {
               }`}
             >
               <CheckCircle className="w-6 h-6" />
-              <span className="text-lg">Lanjut ke Aktivitas DIY</span>
+              <span className="text-lg">Lanjut ke Aktivitas Selanjutnya</span>
             </button>
           </div>
         </div>

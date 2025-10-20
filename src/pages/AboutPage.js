@@ -40,14 +40,14 @@ const AboutPage = ({ setCurrentView, setShowPasswordModal, companyInfo }) => {
       { 
         name: 'Middle Kit', 
         link: 'https://id.shp.ee/VYS4ps1',
-        image: '/middle-kit.jpg'
+        image: '/middle.jpg'
       }
     ],
     advance: [
       { 
         name: 'Advance Kit', 
         link: 'https://id.shp.ee/VYS4ps1',
-        image: '/advance-kit.jpg'
+        image: '/advance.jpg'
       }
     ],
   };
